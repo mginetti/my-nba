@@ -20,10 +20,15 @@
           ></path>
         </svg>
         <div :class="{'menu__tab-active': isActive}" class="menu__tab">
-          <button @click="toggle">X</button>
-          ciao
-          cioa
-          ciao
+          <div class="menu__tab--header">
+            <button @click="toggle" class="close">X</button>
+          </div>
+          <div class="menu__tab--body">
+            <ul>
+              <li @click="changeRoute('home')" :class="{active: this.$route.name == 'home'}">Home</li>
+              <li @click="changeRoute('history')" :class="{active: this.$route.name == 'history'}">History</li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
@@ -42,6 +47,12 @@
     methods: {
       toggle() {
         this.isActive = !this.isActive
+      },
+      changeRoute(route) {
+        if(this.$route.name != route) {
+          this.$router.push({name: route})
+        }
+        this.toggle()
       }
     }
   }
@@ -73,6 +84,54 @@ nav {
         height: 100vh;
         transition: all 0.7s;
         clip-path: circle(0px at 100% 0%);
+        &--header {
+          padding: 0.2rem 0.8rem;
+          text-align: right;
+          .close {
+            background-color: transparent;
+            border: none;
+            font-size: 2rem;
+            padding: 0;
+            margin: 0;
+            color: blue;
+            font-weight: 600;
+            &:focus, &:active {
+              border: none;
+              outline: none;
+            }
+          }
+        }
+        &--body {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          ul {
+            text-decoration: none;
+            list-style: none;
+            text-align: center;
+            li {
+              text-align: center;
+              padding: 0.5rem;
+              color: blue;
+              font-size: 1.4rem;
+              &.active:before {
+                content: url('./assets/ball.svg');
+                height: 0.9rem;
+                width: 0.9rem;
+                position: absolute;
+                left: -0.9rem;
+              }
+              &.active:after {
+                content: url('./assets/ball.svg');
+                height: 0.9rem;
+                width: 0.9rem;
+                position: absolute;
+                right: -0.9rem;
+              }
+            }
+          }
+        }
     }
     &__tab-active {
       transition: all 0.7s;
